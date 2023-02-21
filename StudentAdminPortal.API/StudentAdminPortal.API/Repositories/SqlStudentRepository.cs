@@ -58,5 +58,19 @@ namespace StudentAdminPortal.API.Repositories
             return null;
         }
 
+        public async Task<Student> DeleteStudent (Guid studentId)
+        {
+            var studentToDelete = await GetStudentAsync(studentId);
+
+            if (studentToDelete != null) 
+            {
+                context.Student.Remove(studentToDelete);
+                await context.SaveChangesAsync();
+                return studentToDelete;
+            }
+
+            return null;
+        }
+
     }
 }
