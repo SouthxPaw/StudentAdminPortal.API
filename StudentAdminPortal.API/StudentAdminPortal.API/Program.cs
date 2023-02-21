@@ -17,6 +17,16 @@ builder.Services.AddScoped<IStudentRepository, SqlStudentRepository>();
 builder.Services.AddMvc();
 builder.Services.AddHealthChecks();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddCors((options) =>
+{
+    options.AddPolicy("angularApplication", (builder) =>
+    {
+        builder.WithOrigins("*")
+        .AllowAnyHeader()
+        .WithMethods("GET", "POST", "PUT", "DELETE")
+        .WithExposedHeaders("*");
+    });
+});
 
 var app = builder.Build();
 
@@ -30,9 +40,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseCors("angularApplication");
 app.UseAuthorization();
 app.UseEndpoints(endpoints => endpoints.MapControllers());
-app.UseCors("angularApplication");
 
 var summaries = new[]
 {
