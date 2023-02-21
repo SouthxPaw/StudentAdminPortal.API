@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using StudentAdminPortal.API.DataModels;
@@ -12,9 +13,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<StudentAdminContext>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("StudentAdminPortalDb")));
 
-builder.Services.AddScoped<IStudentRepository, SqlStudentRepository>();
-builder.Services.AddScoped<IImageRepository, LocalStorageImageRepository>();
-
 builder.Services.AddMvc();
 builder.Services.AddHealthChecks();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
@@ -28,6 +26,12 @@ builder.Services.AddCors((options) =>
         .WithExposedHeaders("*");
     });
 });
+
+builder.Services.AddScoped<IStudentRepository, SqlStudentRepository>();
+builder.Services.AddScoped<IImageRepository, LocalStorageImageRepository>();
+builder.Services.AddControllers();
+
+builder.Services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 
 var app = builder.Build();
 
