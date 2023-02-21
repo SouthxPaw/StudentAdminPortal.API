@@ -13,6 +13,7 @@ builder.Services.AddDbContext<StudentAdminContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("StudentAdminPortalDb")));
 
 builder.Services.AddScoped<IStudentRepository, SqlStudentRepository>();
+builder.Services.AddScoped<IImageRepository, LocalStorageImageRepository>();
 
 builder.Services.AddMvc();
 builder.Services.AddHealthChecks();
@@ -38,6 +39,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Resources")),
+    RequestPath = "/Resources"
+});
 
 app.UseRouting();
 app.UseCors("angularApplication");
