@@ -12,7 +12,7 @@ namespace StudentAdminPortal.API.Validators
             RuleFor(x => x.LastName).NotEmpty();
             RuleFor(x => x.DateOfBirth).NotEmpty();
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
-            RuleFor(x => x.Mobile).GreaterThan(99999).LessThan(1000000000);
+            RuleFor(x => x.Mobile).GreaterThan(99999).LessThan(100000000000);
             RuleFor(x => x.GenderId).NotEmpty().Must(id => 
             {
                 var genders = studentRepo.GetGendersAsync().Result.ToList()
